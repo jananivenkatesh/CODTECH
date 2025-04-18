@@ -12,6 +12,26 @@
 
 *MENTOR*: NEELA SANTHOSH
 
+*DESCRIPTION*:
+
+This task focuses on performing basic file operations in the C programming language. The goal is to write a program that can:
+
+
+1. Create a file – This involves generating a new file if it doesn’t already exist or overwriting an existing one.
+
+
+2. Write data to the file – The program should allow users to enter some text and store it in the file.
+
+
+3. Read data from the file – It should be able to read the contents of the file and display them to the user.
+
+
+4. Append data to the file – Additional data should be added to the end of the file without overwriting the existing contents.
+
+
+Through this program, I am demonstrating how to use various file modes in C such as "w" (write), "r" (read), and "a" (append). This task helps in understanding how to work with files in C, which is a fundamental concept for handling data storage in programs.
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
