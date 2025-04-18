@@ -1,0 +1,122 @@
+# **DATA-COMPRESSION-TOOL**
+
+*COMPANY*: CODTECH IT SOLUTIONS
+
+*NAME*: JANANI.S.V
+
+*INTERN ID*: CT04WF05
+
+*DOMAIN*: C PROGRAMMING
+
+*DURATIONS*: 4 WEEKS
+
+*MENTOR*: NEELA SANTHOSH
+
+*DESCRIPTION*:
+
+
+In this project, I implemented Run-Length Encoding (RLE) in C, a simple form of data compression. The program allows the user to choose between two operations:
+
+
+1. Compression – It reads an input text file and compresses repeated characters by replacing them with a single character followed by the number of occurrences (e.g., aaabb becomes a3b2).
+
+
+2. Decompression – It reads a compressed file and reconstructs the original content by expanding the character-count pairs.
+
+
+
+The program is interactive: it asks the user to input the file names at runtime, making it flexible and user-friendly. This project helped me understand how compression algorithms work and also strengthened my skills in file handling, string manipulation, and looping constructs in C.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+// Function to compress the input file and write to output file
+void compressFile(const char *inputFile, const char *outputFile) {
+    FILE *in = fopen(inputFile, "r");
+    FILE *out = fopen(outputFile, "w");
+
+    if (!in || !out) {
+        printf("Error opening files.\n");
+        return;
+    }
+
+    char ch, prev;
+    int count = 1;
+
+    prev = fgetc(in);
+    while ((ch = fgetc(in)) != EOF) {
+        if (ch == prev) {
+            count++;
+        } else {
+            fprintf(out, "%c%d", prev, count);
+            prev = ch;
+            count = 1;
+        }
+    }
+    if (prev != EOF)
+        fprintf(out, "%c%d", prev, count);
+
+    printf("File compressed successfully!\n");
+
+    fclose(in);
+    fclose(out);
+}
+
+// Function to decompress the file
+void decompressFile(const char *inputFile, const char *outputFile) {
+    FILE *in = fopen(inputFile, "r");
+    FILE *out = fopen(outputFile, "w");
+
+    if (!in || !out) {
+        printf("Error opening files.\n");
+        return;
+    }
+
+    char ch;
+    while ((ch = fgetc(in)) != EOF) {
+        if (isalpha(ch)) {
+            int count = 0;
+            char digit;
+            while ((digit = fgetc(in)) != EOF && isdigit(digit)) {
+                count = count * 10 + (digit - '0');
+            }
+            for (int i = 0; i < count; i++) {
+                fputc(ch, out);
+            }
+            if (digit != EOF) ungetc(digit, in); // push back non-digit
+        }
+    }
+
+    printf("File decompressed successfully!\n");
+
+    fclose(in);
+    fclose(out);
+}
+
+int main() {
+    int choice;
+    char inputFile[100], outputFile[100];
+
+    printf("Run-Length Encoding (RLE) Tool\n");
+    printf("1. Compress\n");
+    printf("2. Decompress\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    printf("Enter input file name: ");
+    scanf("%s", inputFile);
+    printf("Enter output file name: ");
+    scanf("%s", outputFile);
+
+    if (choice == 1)
+        compressFile(inputFile, outputFile);
+    else if (choice == 2)
+        decompressFile(inputFile, outputFile);
+    else
+        printf("Invalid choice.\n");
+
+    return 0;
+}
