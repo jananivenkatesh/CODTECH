@@ -1,0 +1,66 @@
+# **FILE-HANDLING-PROGRAM**
+
+*COMPANY*: CODTECH IT SOLUTIONS
+
+*NAME*: JANANI.S.V
+
+*INTERN ID*: CT04WF05
+
+*DOMAIN*: C PROGRAMMING
+
+*DURATIONS*: 4 WEEKS
+
+*MENTOR*: NEELA SANTHOSH
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    char filename[100];
+    char data[500];
+
+    printf("Enter the filename: ");
+    scanf("%s", filename);
+
+    // Create and write to file
+    FILE *fptr = fopen(filename, "w");
+    if (fptr == NULL) {
+        printf("Error opening file for writing!\n");
+        return 1;
+    }
+
+    printf("Enter data to write into the file: ");
+    getchar(); // to consume leftover newline
+    fgets(data, sizeof(data), stdin);
+    fputs(data, fptr);
+    fclose(fptr);
+    printf("Data written successfully.\n");
+
+    // Append to file
+    fptr = fopen(filename, "a");
+    if (fptr == NULL) {
+        printf("Error opening file for appending!\n");
+        return 1;
+    }
+
+    printf("Enter data to append to the file: ");
+    fgets(data, sizeof(data), stdin);
+    fputs(data, fptr);
+    fclose(fptr);
+    printf("Data appended successfully.\n");
+
+    // Read and display file contents
+    fptr = fopen(filename, "r");
+    if (fptr == NULL) {
+        printf("Error opening file for reading!\n");
+        return 1;
+    }
+
+    printf("\nContents of the file '%s':\n", filename);
+    while (fgets(data, sizeof(data), fptr) != NULL) {
+        printf("%s", data);
+    }
+    fclose(fptr);
+
+    return 0;
+}
