@@ -1,0 +1,104 @@
+# **COMPILER-DESIGN-BASICS**
+
+*COMPANY*: CODTECH IT SOLUTIONS
+
+*NAME*: JANANI.S.V
+
+*INTERN ID*: CT04WF05
+
+*DOMAIN*: C PROGRAMMING
+
+*DURATIONS*: 4 WEEKS
+
+*MENTOR*: NEELA SANTHOSH
+
+*DESCRIPTION*:
+
+In this project, I developed a simple lexical analyzer using the C programming language. The main objective of the program is to read an input file and identify various lexical tokens such as:
+
+
+Keywords (e.g., int, while, return)
+
+
+Operators (e.g., +, -, =, ==)
+
+
+Identifiers (e.g., variable and function names)
+
+
+The program prompts the user to input the filename, reads the content of the file, and processes it character by character to detect different token types. This lexical analyzer simulates the first phase of a compiler and demonstrates how source code is broken into meaningful elements before parsing.
+
+It has helped me understand the fundamentals of compiler design, especially lexical analysis, and how programming languages interpret source code.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+char keywords[32][10] = {
+    "auto","break","case","char","const","continue","default","do","double",
+    "else","enum","extern","float","for","goto","if","int","long",
+    "register","return","short","signed","sizeof","static","struct",
+    "switch","typedef","union","unsigned","void","volatile","while"
+};
+
+// Function to check if a word is a keyword
+int isKeyword(char* word) {
+    for(int i = 0; i < 32; i++) {
+        if(strcmp(word, keywords[i]) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+// Function to check if a character is an operator
+int isOperator(char ch) {
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '/' ||
+            ch == '=' || ch == '%' || ch == '<' || ch == '>');
+}
+
+int main() {
+    char filename[100], ch, buffer[100];
+    FILE *fp;
+    int i = 0;
+
+    printf("Enter the filename: ");
+    scanf("%s", filename);
+
+    fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("File not found!\n");
+        return 1;
+    }
+
+    printf("\nLexical Analysis:\n");
+
+    while ((ch = fgetc(fp)) != EOF) {
+        if (isalnum(ch)) {
+            buffer[i++] = ch;
+        } else if (isOperator(ch)) {
+            buffer[i] = '\0';
+            if (i > 0) {
+                if (isKeyword(buffer))
+                    printf("Keyword: %s\n", buffer);
+                else
+                    printf("Identifier: %s\n", buffer);
+                i = 0;
+            }
+            printf("Operator: %c\n", ch);
+        } else if (isspace(ch) || ch == ';' || ch == ',' || ch == '(' || ch == ')') {
+            buffer[i] = '\0';
+            if (i > 0) {
+                if (isKeyword(buffer))
+                    printf("Keyword: %s\n", buffer);
+                else
+                    printf("Identifier: %s\n", buffer);
+                i = 0;
+            }
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
