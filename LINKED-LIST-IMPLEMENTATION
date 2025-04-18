@@ -1,0 +1,134 @@
+# **LINKED-LIST-IMPLEMENTATION**
+
+*COMPANY*: CODTECH IT SOLUTIONS
+
+*NAME*: JANANI.S.V
+
+*INTERN ID*: CT04WF05
+
+*DOMAIN*: C PROGRAMMING
+
+*DURATIONS*: 4 WEEKS
+
+*MENTOR*: NEELA SANTHOSH
+
+*DESCRIPTION*:
+
+
+In this program, I have implemented a singly linked list in the C programming language. The program includes basic operations such as:
+
+
+Insertion (at beginning, end, or any position)
+
+
+Deletion (from beginning, end, or by specific value)
+
+
+Traversal (to display the list elements)
+
+
+The purpose of this project is to understand dynamic memory allocation and the working of pointers in C. Each node of the linked list contains two parts: data and a pointer to the next node. The operations are designed to be modular and user-friendly, allowing the user to interact through a menu-driven interface.
+
+This program helps in strengthening the core understanding of data structures, especially how linked lists operate, and how nodes are dynamically managed during runtime.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function prototypes
+void insert(struct Node** head, int value);
+void deleteNode(struct Node** head, int value);
+void traverse(struct Node* head);
+
+// Insert at the end
+void insert(struct Node** head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    struct Node* temp = *head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+}
+
+// Delete by value
+void deleteNode(struct Node** head, int value) {
+    struct Node *temp = *head, *prev = NULL;
+
+    if (temp != NULL && temp->data == value) {
+        *head = temp->next;
+        free(temp);
+        return;
+    }
+
+    while (temp != NULL && temp->data != value) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Value not found in the list.\n");
+        return;
+    }
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+// Display list
+void traverse(struct Node* head) {
+    struct Node* temp = head;
+    printf("Linked List: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+// Main menu
+int main() {
+    struct Node* head = NULL;
+    int choice, value;
+
+    while (1) {
+        printf("\n--- Singly Linked List Menu ---\n");
+        printf("1. Insert\n2. Delete\n3. Traverse\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                insert(&head, value);
+                break;
+            case 2:
+                printf("Enter value to delete: ");
+                scanf("%d", &value);
+                deleteNode(&head, value);
+                break;
+            case 3:
+                traverse(head);
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
